@@ -7,7 +7,7 @@ class Api::V1::TodosController < ApplicationController
     # here the limit into bracket is a function define in the private section
     @todos = Todo.limit(limit).offset(params[:offset])
 
-    render json: TodosRepresenter.new(@todos).as_json
+    render json: TodosRepresenter.new(@todos).as_json.reverse
   end
 
   # GET /todos/1
@@ -50,12 +50,12 @@ class Api::V1::TodosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def todo_params
-      params.require(:todo).permit(:id, :title, :completed)
+      params.require(:todo).permit(:id, :title, :completed, :_limit)
     end
 
     def limit
       [
-        params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
+        params.fetch(:_limit, MAX_PAGINATION_LIMIT).to_i,
         MAX_PAGINATION_LIMIT
       ].min
     end

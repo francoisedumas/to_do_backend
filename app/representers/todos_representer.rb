@@ -7,7 +7,8 @@ class TodosRepresenter
     todos.map do |todo|
       {
         id: todo.id,
-        title: todo.title
+        title: todo.title,
+        completed: todo.completed
         # author_name: author_name(todo),
       }
     end

@@ -23,6 +23,16 @@ gh repo create
 git push origin master
 ```
 
+### Scaffold the To Do!
+
+`rails g scaffold todos title completed:boolean`
+`rails db:migrate`
+
+Let's get some seeds
+`Todo.create!(title: 'Hello, world', completed: true)`
+`Todo.create!(title: 'Learn RoR API', completed: false)`
+`Todo.create!(title: 'Learn front with VueJS', completed: false)`
+
 ### Cors gem
 
 Uncomment the `gem 'rack-cors'` and bundle
@@ -39,16 +49,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   end
 end
 ```
-
-### Scaffold the To Do!
-
-`rails g scaffold todos title completed:boolean`
-`rails db:migrate`
-
-Let's get some seeds
-`Todo.create!(title: 'Hello, world', completed: true)`
-`Todo.create!(title: 'Learn RoR API', completed: false)`
-`Todo.create!(title: 'Learn front with VueJS', completed: false)`
 
 ### API: routes & controllers
 
@@ -81,6 +81,10 @@ def index
   render json: @todos.reverse
 end
 # in private
+def todo_params
+  params.require(:todo).permit(:id, :title, :completed, :_limit)
+end
+
 def limit
   [
     params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
