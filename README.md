@@ -1,12 +1,12 @@
 # RoR API
 ## Introduction to API using Ruby on Rails
 
-This API exercise is based on the video series https://youtu.be/gnymlh4Ljvw
-The target is to build a simple todo store application using
+This API exercise is based on the video https://youtu.be/ZKi8AfKzfWY
+The target is to build a simple todo application using
  - RoR as an API back end
  - VueJS for the front end
 
-<img width="1272" alt="Screenshot 2021-07-02 at 16 19 25" src="https://user-images.githubusercontent.com/33062224/124288579-9f841700-db51-11eb-9746-d943bf014b38.png">
+<img width="1149" alt="Screenshot 2021-08-13 at 16 55 19" src="https://user-images.githubusercontent.com/33062224/129376658-9000b534-5c34-466c-b108-134a755e1cc8.png">
 
 ## Starting with basic models and controllers
 
