@@ -181,3 +181,7 @@ It's been solved with `bundle lock --add-platform x86_64-linux` and `bundle lock
 ### Solving issue with Sqlite3
 
 If using Sqlite3 you have the next error with Heroku `Detected sqlite3 gem which is not supported on Heroku:` To solve it follow the [article here](https://devcenter.heroku.com/articles/sqlite3)
+
+### Deploy & migrate
+
+Now run `git push heroku master ` and `heroku run rails db:migrate` then go to the URL of your app followed by `api/v1/todos` for me its `https://todobackendror.herokuapp.com/api/v1/todos`
