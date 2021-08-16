@@ -167,6 +167,7 @@ else
 
 ## Deploying with Heroku
 
+### Solving issue with Gemfile.lock
 I had issues with the Gemfile.lock and with the next error
 ```
 Your bundle only supports platforms ["x86_64-darwin-19"] but your local
@@ -176,3 +177,7 @@ platform is x86_64-linux. Add the current platform to the lockfile with
 
 It's been solved with `bundle lock --add-platform x86_64-linux` and `bundle lock --add-platform ruby`
 [A good article about it here](https://www.moncefbelyamani.com/understanding-the-gemfile-lock-file/)
+
+### Solving issue with Sqlite3
+
+If using Sqlite3 you have the next error with Heroku `Detected sqlite3 gem which is not supported on Heroku:` To solve it follow the [article here](https://devcenter.heroku.com/articles/sqlite3)
