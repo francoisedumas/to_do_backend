@@ -164,3 +164,15 @@ if todo.save
   render json: TodoRepresenter.new(todo).as_json, status: :created
 else
 ```
+
+## Deploying with Heroku
+
+I had issues with the Gemfile.lock and with the next error
+```
+Your bundle only supports platforms ["x86_64-darwin-19"] but your local
+platform is x86_64-linux. Add the current platform to the lockfile with
+`bundle lock --add-platform x86_64-linux` and try again.
+```
+
+It's been solved with `bundle lock --add-platform x86_64-linux` and `bundle lock --add-platform ruby`
+[A good article about it here](https://www.moncefbelyamani.com/understanding-the-gemfile-lock-file/)
