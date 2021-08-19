@@ -5,7 +5,7 @@ class TodoRepresenter
 
   def as_json
     {
-      id: todo.id,
+      id:    todo.id,
       title: todo.title
       # author_name: author_name(todo),
     }

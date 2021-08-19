@@ -186,6 +186,17 @@ If using Sqlite3 you have the next error with Heroku `Detected sqlite3 gem which
 
 Now run `git push heroku master ` and `heroku run rails db:migrate` then go to the URL of your app followed by `api/v1/todos` for me its `https://todobackendror.herokuapp.com/api/v1/todos`
 
+## Clean code with Rubocop
+Go to your Gemfil and add below gem
+```ruby
+group :development do
+  #...
+  gem 'rubocop', '~> 1.14', require: false
+end
+```
+
+Create a `.rubocop.yml` and copy paste the code from this app file (too long to paste here)
+
 ## Adding tests 😇
 
 ### Rspec setup
