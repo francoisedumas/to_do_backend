@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Todos API', type: :request do
     
-  describe 'GET /books' do
+  describe 'GET /todos' do
     before do
       FactoryBot.create(:todo, title: 'My first task', completed: false)
       FactoryBot.create(:todo, title: 'My second task', completed: false)
@@ -31,37 +31,34 @@ describe 'Todos API', type: :request do
     end
   end
 
-#   describe 'POST /books' do
-#     it 'create a new book' do
-#       expect {
-#         post '/api/v1/books', params: {
-#           book: { title: 'The Martian' },
-#           author: { first_name: 'Andy', last_name: 'Weir', age: '48'}
-#         }
-#       }.to change { Book.count }.from(0).to(1)
+  describe 'POST /todos' do
+    it 'create a new todo' do
+      expect {
+        post '/api/v1/todos', params: {
+          todo: { title: 'Read the Martian' }
+        }
+      }.to change { Todo.count }.from(0).to(1)
 
-#       expect(response).to have_http_status(:created)
-#       expect(Author.count).to eq(1)
-#       expect(JSON.parse(response.body)).to eq(
-#         {
-#           'id' => 1,
-#           'title' => 'The Martian',
-#           'author_name' => 'Andy Weir',
-#           'author_age' => 48
-#         }
-#       )
-#     end
-#   end
+      expect(response).to have_http_status(:created)
+      expect(JSON.parse(response.body)).to eq(
+        # db cleaner doesn't work should be id 1
+        {
+          'id' => 3,
+          'title' => 'Read the Martian'
+        }
+      )
+    end
+  end
 
-#   describe 'DELETE /books/:id' do
-#     let!(:book) { FactoryBot.create(:book, title: '1984', author: first_author) }
+  describe 'DELETE /todos/:id' do
+    let!(:todo) { FactoryBot.create(:todo, title: 'My delete test') }
 
-#     it 'deletes a book' do
-#       expect {
-#         delete "/api/v1/books/#{book.id}"
-#       }.to change { Book.count }.from(1).to(0)
+    it 'deletes a todo' do
+      expect {
+        delete "/api/v1/todos/#{todo.id}"
+      }.to change { Todo.count }.from(1).to(0)
 
-#       expect(response).to have_http_status(:no_content)
-#     end
-#   end
+      expect(response).to have_http_status(:no_content)
+    end
+  end
 end
