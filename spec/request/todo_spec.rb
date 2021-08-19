@@ -12,8 +12,8 @@ describe 'Todos API', type: :request do
       get '/api/v1/todos'
 
       expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body).size).to eq(2)
-      expect(JSON.parse(response.body)).to eq(
+      expect(response_body.size).to eq(2)
+      expect(response_body).to eq(
         # there is a reverse in the controller so the id 2 come before id 1
         [
           {
@@ -40,7 +40,7 @@ describe 'Todos API', type: :request do
       }.to change { Todo.count }.from(0).to(1)
 
       expect(response).to have_http_status(:created)
-      expect(JSON.parse(response.body)).to eq(
+      expect(response_body).to eq(
         # db cleaner doesn't work should be id 1
         {
           'id' => 3,

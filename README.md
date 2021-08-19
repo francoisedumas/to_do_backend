@@ -185,3 +185,156 @@ If using Sqlite3 you have the next error with Heroku `Detected sqlite3 gem which
 ### Deploy & migrate
 
 Now run `git push heroku master ` and `heroku run rails db:migrate` then go to the URL of your app followed by `api/v1/todos` for me its `https://todobackendror.herokuapp.com/api/v1/todos`
+
+## Adding tests 😇
+
+### Rspec setup
+Go to your Gemfil and add below gem
+```ruby
+group :development, :test do
+  #...
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+end
+
+group :test do
+  gem 'database_cleaner-active_record'
+end
+```
+In the terminal
+```
+bundle
+rails generate rspec:install
+```
+
+```ruby
+# in the rails_helper.rb uncomment below line
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+# turn below line to false
+config.use_transactional_fixtures = false
+```
+
+#### DB cleaner
+Create a spec/support folder and add a database_cleaner_spec.rb file
+```ruby
+RSpec.configure do |config|
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+end
+```
+#### Creating factorie
+Create a spec/factories folder and add a todo.rb file
+```ruby
+FactoryBot.define do
+  factory :todo do
+  end
+end
+```
+
+## The tests 
+
+### Request tests
+Create a spec/requests folder and add a todo_spec.rb file
+```ruby
+require 'rails_helper'
+
+describe 'Todos API', type: :request do
+    
+  describe 'GET /todos' do
+    before do
+      FactoryBot.create(:todo, title: 'My first task', completed: false)
+      FactoryBot.create(:todo, title: 'My second task', completed: false)
+    end
+
+    it 'returns all todos' do
+      get '/api/v1/todos'
+
+      expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body).size).to eq(2)
+      expect(JSON.parse(response.body)).to eq(
+        # there is a reverse in the controller so the id 2 come before id 1
+        [
+          {
+            'id' => 2,
+            'title' => 'My second task',
+            'completed' => false
+          },
+          {
+          'id' => 1,
+          'title' => 'My first task',
+          'completed' => false
+          }
+        ]
+      )
+    end
+  end
+
+  describe 'POST /todos' do
+    it 'create a new todo' do
+      expect {
+        post '/api/v1/todos', params: {
+          todo: { title: 'Read the Martian' }
+        }
+      }.to change { Todo.count }.from(0).to(1)
+
+      expect(response).to have_http_status(:created)
+      expect(JSON.parse(response.body)).to eq(
+        # db cleaner doesn't work should be id 1
+        {
+          'id' => 3,
+          'title' => 'Read the Martian'
+        }
+      )
+    end
+  end
+
+  describe 'DELETE /todos/:id' do
+    let!(:todo) { FactoryBot.create(:todo, title: 'My delete test') }
+
+    it 'deletes a todo' do
+      expect {
+        delete "/api/v1/todos/#{todo.id}"
+      }.to change { Todo.count }.from(1).to(0)
+
+      expect(response).to have_http_status(:no_content)
+    end
+  end
+end
+```
+
+#### Drying test
+Testing API we often use `JSON.parse(response.body)` to dry it up create a request_helper.rb file in spec folder
+```ruby
+module RequestHelper
+  def response_body
+    JSON.parse(response.body)
+  end
+end
+```
+In the spec_helper.rb file
+```ruby
+require 'request_helper'
+# ...
+# at the bottom in the config area before the last end add
+config.include RequestHelper, type: :request
+```
+Now in every Rspec file with `type: :request` you can replace `JSON.parse(response.body)` by `response_body` and you don't need to use `require 'request_helper'` at the top of the file

@@ -1,4 +1,4 @@
 FactoryBot.define do
-    factory :todo do
-    end
+  factory :todo do
   end
+end
