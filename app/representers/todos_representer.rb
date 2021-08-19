@@ -6,8 +6,8 @@ class TodosRepresenter
   def as_json
     todos.map do |todo|
       {
-        id: todo.id,
-        title: todo.title,
+        id:        todo.id,
+        title:     todo.title,
         completed: todo.completed
         # author_name: author_name(todo),
       }
