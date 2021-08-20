@@ -349,3 +349,36 @@ require 'request_helper'
 config.include RequestHelper, type: :request
 ```
 Now in every Rspec file with `type: :request` you can replace `JSON.parse(response.body)` by `response_body` and you don't need to use `require 'request_helper'` at the top of the file
+
+#### Controller test
+Create a spec/controllers folder and add a todos_controller_spec.rb file
+```ruby
+require 'rails_helper'
+
+RSpec.describe Api::V1::TodosController, type: :controller do
+  it 'has a max limit of 100' do
+    # explanation https://youtu.be/SQhj5gBNTB0 about 7:40
+    expect(Todo).to receive(:limit).with(100).and_call_original
+
+    get :index, params: { limit: 999 }
+  end
+end
+```
+
+#### Model test
+Create a spec/models folder and add a todo_spec.rb file
+```ruby
+require 'rails_helper'
+
+RSpec.describe Todo, type: :model do
+  subject(:my_todo) { Todo.create(title: "That's a todo", completed: false) }
+
+  it 'is created' do
+    expect(my_todo).to be_valid
+  end
+
+  it 'can be checked for object attribute and proper values' do
+    expect(my_todo).to have_attributes(title: "That's a todo", completed: false)
+  end
+end
+```
