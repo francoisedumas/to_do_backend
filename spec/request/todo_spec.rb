@@ -28,6 +28,38 @@ describe 'Todos API', type: :request do
         ]
       )
     end
+
+    it 'returns a subset of todos based on limit' do
+      get '/api/v1/todos', params: { limit: 1 }
+
+      expect(response).to have_http_status(:success)
+      expect(response_body.size).to eq(1)
+      expect(response_body).to eq(
+        [
+          {
+            'id'        => 5,
+            'title'     => 'My first task',
+            'completed' => false
+          }
+        ]
+      )
+    end
+
+    it 'returns a subset of todos based on limit and offset' do
+      get '/api/v1/todos', params: { limit: 1, offset: 1 }
+
+      expect(response).to have_http_status(:success)
+      expect(response_body.size).to eq(1)
+      expect(response_body).to eq(
+        [
+          {
+            'id'        => 8,
+            'title'     => 'My second task',
+            'completed' => false
+          }
+        ]
+      )
+    end
   end
 
   describe 'POST /todos' do
@@ -44,7 +76,7 @@ describe 'Todos API', type: :request do
       expect(response_body).to eq(
         # db cleaner doesn't work should be id 1
         {
-          'id'    => 5,
+          'id'    => 9,
           'title' => 'Read the Martian'
         }
       )

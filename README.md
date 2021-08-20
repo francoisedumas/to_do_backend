@@ -82,7 +82,7 @@ def index
 end
 # in private
 def todo_params
-  params.require(:todo).permit(:id, :title, :completed, :_limit)
+  params.require(:todo).permit(:id, :title, :completed)
 end
 
 def limit

@@ -53,12 +53,12 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def todo_params
-        params.require(:todo).permit(:id, :title, :completed, :_limit)
+        params.require(:todo).permit(:id, :title, :completed)
       end
 
       def limit
         [
-          params.fetch(:_limit, MAX_PAGINATION_LIMIT).to_i,
+          params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
           MAX_PAGINATION_LIMIT
         ].min
       end
