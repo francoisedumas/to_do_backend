@@ -8,7 +8,11 @@ The target is to build a simple todo application using
 
 <img width="1149" alt="Screenshot 2021-08-13 at 16 55 19" src="https://user-images.githubusercontent.com/33062224/129376658-9000b534-5c34-466c-b108-134a755e1cc8.png">
 
-*Comment: After cloning or forking run `rails db:create` `rails db:migrate` and `rails s` in your terminal to start the app. If you want to run the test rub rspec*
+## Setup for fork and clone
+
+The front-end can be found [here](https://github.com/francoisedumas/to_do_frontend)
+
+After cloning or forking run `rails db:create` `rails db:migrate` and `rails s` in your terminal to start the app. If you want to run the test rub rspec. Enjoy! 😀
 
 ## Starting with basic models and controllers
 
